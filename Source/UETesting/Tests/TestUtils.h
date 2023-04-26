@@ -1,11 +1,13 @@
 ﻿#pragma once
-
-namespace TPSGame
+namespace TPS
 {
-	template<typename Type1, typename Type2>
-	struct TestPayload
+	namespace Test
 	{
-		Type1 TestValue;
-		Type2 ExpectedValue;
-	};
+		template<typename Type1, typename Type2>
+		struct TestPayload
+		{
+			Type1 TestValue;
+			Type2 ExpectedValue;
+		};
+	}
 }

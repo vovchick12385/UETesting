@@ -1,10 +1,11 @@
 
-#include "Chaos/ChaosPerfTest.h"
-#if(WITH_DEV_AUTOMATION_TESTS || WITH_PERF_AUTOMATION_TESTS)
 
-#include "CoreMinimal.h"
+#if(WITH_DEV_AUTOMATION_TESTS || WITH_PERF_AUTOMATION_TESTS)
 #include "ScienceFuncLibTests.h"
 #include "UETesting/Science/ScienceFuncLib.h"
+#include "CoreMinimal.h"
+
+
 #include "TestUtils.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFibonacciSimple, "TPSGame.Science.FibonacciSimple",
@@ -28,7 +29,7 @@ bool FFibonacciSimple::RunTest(const FString& Parameters)
 
 	
 
-	TArray<TPSGame::TestPayload<int32, int32>> TestData{{0,0}, {1,1}, {2,1}, {3,2}, {4,3},{5,5}};
+	TArray<TPS::Test::TestPayload<int32, int32>> TestData{{0,0}, {1,1}, {2,1}, {3,2}, {4,3},{5,5}};
 
 	for(const auto& c: TestData)
 	{

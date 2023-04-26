@@ -25,7 +25,7 @@ bool FMathMaxInt::RunTest(const FString& Parametr)
 	// -543, -233
 	// -9, -9
 	//-5, 1
-	using Payload = TPSGame::TestPayload<TInterval<int32>, int32>;
+	using Payload = TPS::Test::TestPayload<TInterval<int32>, int32>;
 
 	const TArray<Payload> TestData{
 		{{13,25},25},
