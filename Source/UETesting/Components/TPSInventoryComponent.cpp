@@ -11,6 +11,7 @@ UTPSInventoryComponent::UTPSInventoryComponent()
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+#if !UE_BUILD_SHIPPING
 	const auto InvItem = StaticEnum<EInventoryItemType>();
 	for(int32 i =0; i< InvItem->NumEnums()-1; ++i)
 	{
@@ -19,6 +20,7 @@ void UTPSInventoryComponent::BeginPlay()
 		const auto LimitCheckCond = InventoryLimits.Contains(EnumElem) && InventoryLimits[EnumElem] >= 0;
 		checkf(LimitCheckCond, TEXT("Limit for %s doesn't exist or less then zero"), *EnumElemName);
 	}
+#endif
 }
 
 

@@ -5,7 +5,7 @@
 #include "UETesting/Items/Battery.h"
 #include "Misc/AutomationTest.h"
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTestBattery, "TPSTests.TestBattery",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FTestBattery, "TPSGame.TestBattery",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::HighPriority);
 bool FTestBattery::RunTest(const FString& Parameters)
 {

@@ -15,6 +15,7 @@ public:
 	
 	UTPSInventoryComponent();
 
+	UFUNCTION()
 	bool TryToAddItem(const FInventoryData& InventoryData);
 
 	UFUNCTION(BlueprintCallable)
