@@ -7,7 +7,7 @@
 
 class USphereComponent;
 
-UCLASS()
+UCLASS(Abstract)
 class UETESTING_API ATPSInventoryItem : public AActor
 {
 	GENERATED_BODY()
