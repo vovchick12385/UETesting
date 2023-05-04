@@ -27,6 +27,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FInventoryDataShouldBeSetupCorrectly, "TPSGame.
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FInventoryCanBeTaken, "TPSGame.Items.Inventory.InventoryCanBeTaken",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::HighPriority);
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEveryInventoryItemMeshExists, "TPSGame.Items.Inventory.EveryInventoryItemMeshExists",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::HighPriority);
+
 ///World'/Game/TestingMap.TestingMap'
 namespace{
 
@@ -177,6 +180,36 @@ bool FInventoryCanBeTaken::RunTest(const FString& Parameters)
 	TArray<AActor*> InvItems;
 	UGameplayStatics::GetAllActorsOfClass(World, ATPSInventoryItem::StaticClass(), InvItems);
 	TestTrueExpr(InvItems.IsEmpty());
+	return true;
+}
+
+
+bool FEveryInventoryItemMeshExists::RunTest(const FString& Parameters)
+{
+	LevelScope("/Game/Tests/EmptyTestLevel");
+	
+	UWorld* World = GetTestGameWorld();
+	if(!TestNotNull("Inventory world exist",World))
+		return false;
+	ENUM_LOOP_START(EInventoryItemType, EElem)
+	const FTransform InitialTransform(FVector(100.f*(index + 1)));
+	ATPSInventoryItem* InvItem = CreateBlueprint<ATPSInventoryItem>(World, InventoryItemTestBPName, InitialTransform);
+	if(!TestNotNull("Inventory item exist", InvItem))
+		return false;
+
+	const FInventoryData InvData{EElem, 13};
+	const FLinearColor Color = FLinearColor::Red;
+	CallFuncByNameWithParams(InvItem,"SetInventoryData",
+		{
+			InvData.ToString(),
+			Color.ToString()});
+
+	const auto StaticMeshComp = InvItem->FindComponentByClass<UStaticMeshComponent>();
+	if(!TestNotNull("StaticMesh exist",StaticMeshComp))
+		return false;
+	const FString MeshMsg = FString::Printf(TEXT("Static mesh for %s exists"), *UEnum::GetValueAsString(EElem));
+	TestNotNull(*MeshMsg, StaticMeshComp->GetStaticMesh().Get());
+	ENUM_LOOP_END
 	return true;
 }
 

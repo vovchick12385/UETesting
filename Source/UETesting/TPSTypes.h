@@ -28,3 +28,21 @@ struct FInventoryData
 		return FString::Printf(TEXT("(Type=%i,Score=%i)"),Type,Score);
 	}
 };
+
+USTRUCT(BlueprintType)
+struct FHealthData
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1.0"))
+	float MaxHealth = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1.0"))
+	float HealModifier = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1.0", Units = "s"))
+	float HealRate = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1.0", Units = "s"))
+	float LifeSpan = 1.f;
+	
+};

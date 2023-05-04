@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "TPSTypes.h"
 #include "MyProjectCharacter.generated.h"
 
 
@@ -68,5 +69,22 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UTPSInventoryComponent* InventoryComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
+	FHealthData HealthData;
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealthPercent() const;
+
+	
+private:
+	FTimerHandle HealTimer;
+	UFUNCTION()
+	void OnAnyDamageReceived(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser );
+	float Health =0.f;
+
+	void OnHealing();
+	void OnDead();
+	
 };
 

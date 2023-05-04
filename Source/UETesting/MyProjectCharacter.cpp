@@ -67,6 +67,57 @@ void AMyProjectCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+	check(HealthData.MaxHealth > 0.0f);
+	Health = HealthData.MaxHealth;
+
+	OnTakeAnyDamage.AddDynamic(this, &AMyProjectCharacter::OnAnyDamageReceived);
+}
+
+float AMyProjectCharacter::GetHealthPercent() const
+{
+	return Health/HealthData.MaxHealth;
+}
+
+void AMyProjectCharacter::OnAnyDamageReceived(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatedBy, AActor* DamageCauser)
+{
+	const auto IsAlive = [&](){return Health > 0.0f;};
+	if(Damage <= 0.0f || !IsAlive())
+		return;
+	Health = FMath::Clamp(Health - Damage, 0.0f, HealthData.MaxHealth);
+	if(IsAlive())
+	{
+		 GetWorldTimerManager().SetTimer(HealTimer, this, &AMyProjectCharacter::OnHealing, HealthData.HealRate, true, -1.f);
+	}
+	else
+	{
+		OnDead();
+	}
+}
+
+void AMyProjectCharacter::OnHealing()
+{
+	Health = FMath::Clamp(Health + HealthData.HealModifier, 0.0f, HealthData.MaxHealth);
+	if(FMath::IsNearlyEqual(Health, HealthData.MaxHealth))
+	{
+		Health = HealthData.MaxHealth;
+		GetWorldTimerManager().ClearTimer(HealTimer);
+	}
+}
+
+void AMyProjectCharacter::OnDead()
+{
+	GetWorldTimerManager().ClearTimer(HealTimer);
+
+	GetCharacterMovement()->DisableMovement();
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetSimulatePhysics(true);
+	if(Controller)
+	{
+		Controller->ChangeState(NAME_Spectating);
+	}
+	SetLifeSpan(HealthData.LifeSpan);
 }
 
 //////////////////////////////////////////////////////////////////////////
