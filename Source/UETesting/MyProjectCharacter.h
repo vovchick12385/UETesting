@@ -51,9 +51,7 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
-
-protected:
+	
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
@@ -66,6 +64,8 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	float GetHealthPercent() const;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UTPSInventoryComponent* InventoryComponent;
@@ -73,8 +73,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
 	FHealthData HealthData;
 
-	UFUNCTION(BlueprintCallable)
-	float GetHealthPercent() const;
+	
 
 	
 private:

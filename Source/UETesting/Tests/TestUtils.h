@@ -51,7 +51,14 @@ const auto EnumElem = static_cast<TYPE>(index);\
 		UWorld* GetTestGameWorld();
 		
 		void CallFuncByNameWithParams(UObject* Object, const FString& FuncName, const TArray<FString>& Params);
+
 		
+		template<typename T>
+		T* CreateBlueprintDeferred(UWorld* World, const FString& Name, const FTransform& Transform = FTransform::Identity)
+		{
+			const UBlueprint* Blueprint = LoadObject<UBlueprint>(nullptr, *Name);
+			return (World && Blueprint) ? World->SpawnActorDeferred<T>(Blueprint->GeneratedClass, Transform) : nullptr;
+		}
 	}
 	
 }

@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/TPSInventoryComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -85,6 +86,7 @@ void AMyProjectCharacter::OnAnyDamageReceived(AActor* DamagedActor, float Damage
 	if(Damage <= 0.0f || !IsAlive())
 		return;
 	Health = FMath::Clamp(Health - Damage, 0.0f, HealthData.MaxHealth);
+	UKismetSystemLibrary::PrintString(this, FString::SanitizeFloat(Health));
 	if(IsAlive())
 	{
 		 GetWorldTimerManager().SetTimer(HealTimer, this, &AMyProjectCharacter::OnHealing, HealthData.HealRate, true, -1.f);
